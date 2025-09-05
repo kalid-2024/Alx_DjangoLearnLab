@@ -4,5 +4,5 @@ book
 
 #Expected output :
 # Expected output:
-<Book: Nineteen Eighty Four by George Orwell (1949)>
+<Book: Nineteen Eighty-Four by George Orwell (1949)>
 
