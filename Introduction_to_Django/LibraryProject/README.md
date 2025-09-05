@@ -37,7 +37,6 @@ python manage.py runserver
 python manage.py test
 
 📂 Project Structure
-
 LibraryProject/
 │
 ├── LibraryProject/       # Django project settings
