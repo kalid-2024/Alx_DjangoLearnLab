@@ -5,13 +5,13 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "LibraryProject.settings")
 django.setup()
 
-from relationship_app.models import Author, Library
+from relationship_app.models import Author, Library, Book, Librarian
 
 # 1️⃣ Query all books by a specific author
 def books_by_author(author_name):
     try:
-        author = Author.objects.filter(name=author_name)
-        books = author.books.all()   # thanks to related_name
+        author = Author.objects.get(name=author_name)
+        books = Book.objects.filter(author=author)
         print(f"\nBooks by {author.name}:")
         for book in books:
             print(f"- {book.title}")
