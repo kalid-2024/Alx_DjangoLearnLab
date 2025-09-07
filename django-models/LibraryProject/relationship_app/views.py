@@ -3,6 +3,12 @@ from django.http import HttpResponse
 from .models import Book
 from django.views.generic.detail import DetailView
 from .models import Library
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -22,3 +28,38 @@ class LibraryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['books'] = self.object.books.all()
         return context
+    
+
+
+# Login view
+def user_login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Welcome, {user.username}!")
+            return redirect("list_all_books")  # redirect to some page after login
+    else:
+        form = AuthenticationForm()
+    return render(request, "relationship_app/login.html", {"form": form})
+
+
+# Logout view
+def user_logout(request):
+    logout(request)
+    return render(request, "relationship_app/logout.html")
+
+
+# Registration view
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # log in immediately after registration
+            messages.success(request, f"Account created for {user.username}!")
+            return redirect("list_all_books")
+    else:
+        form = UserCreationForm()
+    return render(request, "relationship_app/register.html", {"form": form})
