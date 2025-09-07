@@ -3,9 +3,7 @@ from . import views
 from django.contrib.auth.views import LoginView, LogoutView
 from .views import list_books
 from .views import LibraryDetailView
-from .admin_view import admin_dashboard
-from .librarian_view import librarian_dashboard
-from .member_view import member_dashboard
+from .views import admin_dashboard, librarian_dashboard, member_dashboard
 
 urlpatterns = [
     # Function-based view
@@ -24,4 +22,9 @@ urlpatterns = [
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
     path('librarian-dashboard/', librarian_dashboard, name='librarian_dashboard'),
     path('member-dashboard/', member_dashboard, name='member_dashboard'),
+
+     # Permission-protected views
+    path('book/add/', views.add_book, name='add_book'),
+    path('book/<int:pk>/edit/', views.edit_book, name='edit_book'),
+    path('book/<int:pk>/delete/', views.delete_book, name='delete_book'),
 ]
