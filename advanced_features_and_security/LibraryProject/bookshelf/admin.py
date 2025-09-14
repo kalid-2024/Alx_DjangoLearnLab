@@ -3,7 +3,6 @@ from .models import Book
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
-
 class BookAdmin(admin.ModelAdmin):
     # Fields to display in the list view
     list_display = ("title", "author", "publication_year")
@@ -25,4 +24,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
 # Register your models here.
-admin.site.register(Book, BookAdmin, CustomUser, CustomUserAdmin)
+admin.site.register(Book, BookAdmin)
+
+# Register your models here.
+admin.site.register(CustomUser, CustomUserAdmin)
