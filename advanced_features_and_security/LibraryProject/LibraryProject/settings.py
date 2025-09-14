@@ -124,3 +124,31 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "bookshelf.CustomUser"
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1']  # Replace with your production host
+
+# Browser security protections
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# HTTPS-only cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Optional: HSTS for extra security (forces HTTPS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# CSP reduces XSS risk by restricting which domains can load scripts, styles, images, etc.
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE += ['csp.middleware.CSPMiddleware']
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')  # Example: allow Google Fonts
+CSP_SCRIPT_SRC = ("'self'", 'ajax.googleapis.com')  # Example: allow jQuery
