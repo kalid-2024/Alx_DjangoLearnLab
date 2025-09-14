@@ -152,3 +152,27 @@ MIDDLEWARE += ['csp.middleware.CSPMiddleware']
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')  # Example: allow Google Fonts
 CSP_SCRIPT_SRC = ("'self'", 'ajax.googleapis.com')  # Example: allow jQuery
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS) settings
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True  # Allow preloading in browsers
+
+# Cookies only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Protect against clickjacking
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Make sure Django knows it’s behind a proxy (if applicable)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
