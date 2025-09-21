@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from .models import Book
 from django.views.generic.detail import DetailView
 from .models import Library
-from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
@@ -104,7 +103,7 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('list_all_books')
+            return redirect('list_books')
     else:
         form = BookForm()
     return render(request, 'relationship_app/add_book.html', {'form': form})
@@ -118,7 +117,7 @@ def edit_book(request, pk):
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
-            return redirect('list_all_books')
+            return redirect('list_books')
     else:
         form = BookForm(instance=book)
     return render(request, 'relationship_app/edit_book.html', {'form': form, 'book': book})
@@ -130,5 +129,5 @@ def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == "POST":
         book.delete()
-        return redirect('list_all_books')
+        return redirect('list_books')
     return render(request, 'relationship_app/delete_book.html', {'book': book})
