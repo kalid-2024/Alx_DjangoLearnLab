@@ -9,8 +9,15 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [filters.SearchFilter]
+    # Enable filtering, searching, and ordering
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+     # Filtering options
+    filterset_fields = ['title', 'author', 'publication_year']
+    # Search options
     search_fields = ['title', 'publication_year']
+    # Ordering options
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']  # Default ordering
 
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
@@ -48,3 +55,12 @@ class BookDeleteView(generics.DestroyAPIView):
 # Permissions:
 # - AllowAny for safe methods (list, retrieve)
 # - IsAuthenticated for create/update/delete
+
+
+# BookListView supports:
+# - Filtering: /api/books/?title=1984&author=1&publication_year=1949
+# - Searching: /api/books/?search=keyword (searches title and author name)
+# - Ordering: /api/books/?ordering=title or ?ordering=-publication_year (descending order or newest first)
+#
+# Example: /api/books/?search=Orwell&ordering=-publication_year
+# → returns Orwell's books ordered by newest first
