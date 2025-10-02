@@ -44,32 +44,45 @@ class BookAPITests(APITestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_create_book_authenticated(self):
-        """Authenticated users can create books"""
-        self.client.force_authenticate(user=self.user) 
+    def test_create_book_authenticated_force_auth(self):
+        """Authenticated users can create books using force_authenticate"""
+        self.client.force_authenticate(user=self.user)
         url = reverse("book-create")
         data = {"title": "Homage to Catalonia", "publication_year": 1938, "author": self.author1.id}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Book.objects.count(), 4)
 
+    def test_create_book_authenticated_login(self):
+        """Authenticated users can create books using login()"""
+        logged_in = self.client.login(username="testuser", password="password123")
+        self.assertTrue(logged_in)  # make sure login worked
+        url = reverse("book-create")
+        data = {"title": "Keep the Aspidistra Flying", "publication_year": 1936, "author": self.author1.id}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Book.objects.count(), 5)
+        self.client.logout()
+
     def test_update_book_authenticated(self):
         """Authenticated users can update a book"""
-        self.client.force_authenticate(user=self.user) 
+        self.client.login(username="testuser", password="password123")
         url = reverse("book-update", args=[self.book1.id])
         data = {"title": "Nineteen Eighty-Four", "publication_year": 1949, "author": self.author1.id}
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.book1.refresh_from_db()
         self.assertEqual(self.book1.title, "Nineteen Eighty-Four")
+        self.client.logout()
 
     def test_delete_book_authenticated(self):
         """Authenticated users can delete a book"""
-        self.client.force_authenticate(user=self.user) 
+        self.client.login(username="testuser", password="password123")
         url = reverse("book-delete", args=[self.book2.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Book.objects.count(), 2)
+        self.client.logout()
 
     # ---------- FILTER, SEARCH, ORDER TESTS ----------
 
@@ -89,7 +102,6 @@ class BookAPITests(APITestCase):
         url = reverse("book-list") + "?ordering=-publication_year"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # First book should be the most recent (1997 Harry Potter)
         self.assertEqual(response.data[0]["title"], "Harry Potter")
 
 # Notes:
