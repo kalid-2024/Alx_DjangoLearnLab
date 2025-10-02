@@ -36,6 +36,8 @@ class BookDeleteView(generics.DestroyAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
 
+
+
 # Book Views:
 # - ListView: Retrieve all books (public)
 # - DetailView: Retrieve single book by ID (public)
