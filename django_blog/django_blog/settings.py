@@ -37,7 +37,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "rest_framework",
     "blog",
-    ""
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,7 +60,7 @@ ROOT_URLCONF = 'django_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'blog' / 'templates/blog'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,20 +134,38 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
+# URL to use when referring to static files (CSS, JS, Images)
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Media (for profile pictures)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/app/static/blog/'
+# Login settings
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/' 
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+
+# Where Django will look for additional static files in your project
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "blog" / "static",  # adjust to your app's static folder
 ]
 
+# Where Django will collect all static files for production
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SECURE_HSTS_SECONDS = 31536000  # optional, for HSTS
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True

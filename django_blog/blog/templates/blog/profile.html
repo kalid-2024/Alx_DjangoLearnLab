@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<h2>Profile</h2>
+
+{% if user.profile.image %}
+      <img src="{% static 'images/test.png' %}" alt="Profile image" style="max-width:150px;max-height:150px;">
+{% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Account</h3>
+    {{ u_form.as_p}}
+
+    <h3>Profile</h3>
+    {{ p_form.as_p}}
+
+    <button type="submit"> Submit</button>
+</form>
+{% endblock %}

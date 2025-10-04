@@ -9,4 +9,10 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=CASCADE, related_name="posts")
     def __str__(self):
         return f"{self.title} ({self.author})"
-   
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    bio = models.TextField(blank=True)
+    def __str__(self):
+        return f"{self.user.username} Profile"
