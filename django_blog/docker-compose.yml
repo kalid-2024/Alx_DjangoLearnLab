@@ -1,0 +1,51 @@
+services:
+
+  main_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - blog_db
+    container_name: django_blog_app
+    restart: always 
+    volumes:
+      - .:/app
+    env_file:
+      - .env  
+    ports:
+      - "8000:8000"
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    networks:
+      - backend
+
+  blog_db:
+    image: mysql:8.0
+    container_name: mysql_blog_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_NAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - django_blog_data:/var/lib/mysql  
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    container_name: db_ui
+    ports:
+      - "8080:8080"
+    depends_on:
+      - blog_db
+    networks:
+      - backend
+volumes:
+  django_blog_data:
+
+networks:
+  backend:
+    driver: bridge
