@@ -31,14 +31,16 @@ class PostForm(forms.ModelForm):
             'tags': TagWidget(attrs={'class': 'form-control', 'placeholder': 'Comma-separated tags'}),
         }
         help_texts = {
-            'tags': 'Enter tags separated by commas, e.g. django, tutorial, blog',
+            'tags': 'Enter tags separated by commas, e.g. django, tutorial, blog. New tags will be created automatically.',
         }
 
     def clean_title(self):
+        """Ensure title is not empty."""
         title = self.cleaned_data.get('title', '').strip()
         if not title:
             raise forms.ValidationError('Title must not be empty.')
         return title
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
