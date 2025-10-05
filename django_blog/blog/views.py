@@ -57,8 +57,8 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
-    
-  def get_context_data(self, **kwargs):
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         return context
@@ -138,9 +138,9 @@ class CommentListView(ListView):
     context_object_name = 'comments'
     paginate_by = 20
 
-
     def get_queryset(self):
-    post = get_object_or_404(Post, pk=self.kwargs.get('post_pk'))
-    # use select_related to reduce DB hits
-    return post.comments.select_related('author').all()
+        post = get_object_or_404(Post, pk=self.kwargs.get('pk'))
+        # use select_related to reduce DB hits
+        return post.comments.select_related('author').all()
+        
         
