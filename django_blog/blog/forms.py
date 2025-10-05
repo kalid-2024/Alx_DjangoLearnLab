@@ -28,7 +28,7 @@ class PostForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter post title'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'unique-slug-here'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 8, 'placeholder': 'Write your post content...'}),
-            'tags': TagWidget(attrs={'class': 'form-control', 'placeholder': 'Comma-separated tags'}),
+            'tags': TagWidget(),
         }
         help_texts = {
             'tags': 'Enter tags separated by commas, e.g. django, tutorial, blog. New tags will be created automatically.',
