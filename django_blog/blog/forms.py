@@ -23,6 +23,26 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags', 'slug']
+        ```python
+# blog/forms.py
+
+from django import forms
+from taggit.forms import TagWidget
+from .models import Post
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'content', 'tags']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter post title'}),
+            'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'unique-slug-here'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 8, 'placeholder': 'Write your post content...'}),
+            'tags': TagWidget(attrs={'class': 'form-control', 'placeholder': 'Comma-separated tags'}),
+        }
+        help_texts = {
+            'tags': 'Enter tags separated by commas, e.g. django, tutorial, blog',
+        }
 
     def clean_title(self):
         title = self.cleaned_data.get('title', '').strip()

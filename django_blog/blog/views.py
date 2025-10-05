@@ -173,4 +173,3 @@ def posts_by_tag(request, tag_name):
         'posts': posts,
     }
     return render(request, 'blog/posts_by_tag.html', context)
-```
