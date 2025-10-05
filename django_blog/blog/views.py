@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
@@ -7,8 +7,7 @@ from .forms import PostForm, CommentForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
-
+from django.db.models import Q
 
 
 # Create your views here.
@@ -142,5 +141,36 @@ class CommentListView(ListView):
         post = get_object_or_404(Post, pk=self.kwargs.get('pk'))
         # use select_related to reduce DB hits
         return post.comments.select_related('author').all()
-        
-        
+
+""" SEARCH AND TAGGING VIEWS FEATURES"""
+def post_search(request):
+    """
+    Search posts by title, content or tag name.
+    Query string parameter: q
+    """
+    q = request.GET.get('q', '').strip()
+    posts = Post.objects.none()
+    if q:
+        posts = Post.objects.filter(
+            Q(title__icontains=q) |
+            Q(content__icontains=q) |
+            Q(tags__name__icontains=q)
+        ).distinct()
+    context = {
+        'query': q,
+        'posts': posts,
+    }
+    return render(request, 'blog/search_results.html', context)
+
+
+def posts_by_tag(request, tag_name):
+    """
+    List all posts that have a tag matching tag_name (case-insensitive).
+    """
+    posts = Post.objects.filter(tags__name__iexact=tag_name).distinct()
+    context = {
+        'tag': tag_name,
+        'posts': posts,
+    }
+    return render(request, 'blog/posts_by_tag.html', context)
+```
