@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<article class="post">
+<h1>{{ post.title }}</h1>
+<p class="meta">By {{ post.author }} • {{ post.created_at|date:"M j, Y H:i" }}</p>
+<div class="content">{{ post.content|linebreaks }}</div>
+
+
+{% if user == post.author %}
+<p class="actions">
+<a href="{% url 'blog:post_update' post.pk %}">Edit</a> |
+<a href="{% url 'blog:post_delete' post.pk %}">Delete</a>
+</p>
+{% endif %}
+</article>
+{% endblock %}
