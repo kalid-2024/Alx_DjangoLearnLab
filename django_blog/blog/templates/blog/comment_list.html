@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<h3>Comments for: {{ view.kwargs.post_pk }}</h3>
+{% for comment in comments %}
+<article>
+<p><strong>{{ comment.author.username }}</strong> — {{ comment.created_at }}</p>
+<div>{{ comment.content|linebreaks }}</div>
+</article>
+{% empty %}
+<p>No comments.</p>
+{% endfor %}
+<a href="{% url 'comment_create' post_pk=view.kwargs.post_pk %}">Add Comment</a>
+{% endblock content %}

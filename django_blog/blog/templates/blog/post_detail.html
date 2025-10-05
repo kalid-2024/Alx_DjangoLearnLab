@@ -1,16 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'blog/base.html' %}
 {% block content %}
 <article class="post">
-<h1>{{ post.title }}</h1>
-<p class="meta">By {{ post.author }} • {{ post.created_at|date:"M j, Y H:i" }}</p>
-<div class="content">{{ post.content|linebreaks }}</div>
+    <h1>{{ post.title }}</h1>
+    <p class="meta">By {{ post.author }} • {{ post.created_at|date:"M j, Y H:i" }}</p>
+    <div class="content">{{ post.content|linebreaks }}</div>
 
 
-{% if user == post.author %}
-<p class="actions">
-<a href="{% url 'blog:post_update' post.pk %}">Edit</a> |
-<a href="{% url 'blog:post_delete' post.pk %}">Delete</a>
-</p>
-{% endif %}
+    {% if user == post.author %}
+    <p class="actions">
+    <a href="{% url 'blog:post_update' post.pk %}">Edit</a> |
+    <a href="{% url 'blog:post_delete' post.pk %}">Delete</a>
+    </p>
+    {% endif %}
 </article>
+
+<hr>
+<section id="comments">
+  {% if user.is_authenticated %}
+    <h4>Leave a comment</h4>
+    <form action="{% url 'comment-create' post.pk %}" method="post">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit">Post comment</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to leave a comment.</p>
+  {% endif %}
+</section>
 {% endblock %}
