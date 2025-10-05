@@ -163,7 +163,7 @@ def post_search(request):
     return render(request, 'blog/search_results.html', context)
 
 
-def posts_by_tag(request, tag_name):
+def PostByTagListView(request, tag_name):
     """
     List all posts that have a tag matching tag_name (case-insensitive).
     """
