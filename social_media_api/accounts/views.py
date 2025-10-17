@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from rest_frmework import generics, status
+from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import CustomUser
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -24,8 +25,8 @@ class RegisterView(generics.CreateAPIView):
             }, status=status.HTTP_201_CREATED
         )
 
-class LonginView(generics.GenericAPIView):
-    serializer_class = LonginSerializer
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

@@ -280,31 +280,63 @@ This confirms token-based authentication works.
 
 ⚡ Tips for Postman Testing
 
-Save your token in Postman variables:
+    Save your token in Postman variables:
 
-Go to the top right → Manage Environments → Add a variable authToken.
+    Go to the top right → Manage Environments → Add a variable authToken.
 
-Then in the Headers use:
+    Then in the Headers use:
 
-Authorization: Token {{authToken}}
+    Authorization: Token {{authToken}}
 
 
-Use the same collection to run all requests sequentially.
+    Use the same collection to run all requests sequentially.
 
-Check status codes:
+    Check status codes:
 
-201 Created → registration successful
+    201 Created → registration successful
 
-200 OK → login/profile successful
+    200 OK → login/profile successful
 
-401 Unauthorized → missing/invalid token
+    401 Unauthorized → missing/invalid token
 
 🧰 Technologies Used
 
-Python 3.10+
+    Python 3.10+
 
-Django 5+
+    Django 5+
 
-Django REST Framework
+    Django REST Framework
 
-SQLite3 (default database)
+    SQLite3 (default database)
+
+📝 Posts & Comments API (Tabulated)
+
+    Post Model Overview
+
+| Field        | Type             | Description                                |
+| ------------ | ---------------- | ------------------------------------------ |
+| `author`     | ForeignKey       | User who created the post                  |
+| `title`      | CharField        | Post title                                 |
+| `content`    | TextField        | Post content                               |
+| `created_at` | DateTime         | Auto-created timestamp                     |
+| `updated_at` | DateTime         | Auto-updated timestamp                     |
+| `comments`   | Reverse relation | List of comments associated with this post |
+
+
+Comment Model Overview
+
+| Field        | Type       | Description                  |
+| ------------ | ---------- | ---------------------------- |
+| `post`       | ForeignKey | Post this comment belongs to |
+| `author`     | ForeignKey | User who created the comment |
+| `content`    | TextField  | Comment content              |
+| `created_at` | DateTime   | Auto-created timestamp       |
+| `updated_at` | DateTime   | Auto-updated timestamp       |
+
+    Authentication Requirement
+
+| Requirement    | Details                                  |
+| -------------- | ---------------------------------------- |
+| Authentication | All endpoints require a valid token      |
+| Header         | `Authorization: Token <your_token_here>` |
+
