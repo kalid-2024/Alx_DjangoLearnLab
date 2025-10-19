@@ -340,3 +340,14 @@ Comment Model Overview
 | Authentication | All endpoints require a valid token      |
 | Header         | `Authorization: Token <your_token_here>` |
 
+
+
+### Follow / Unfollow Users
+- **POST /api/accounts/follow/<user_id>/** - Follow a user
+- **POST /api/accounts/unfollow/<user_id>/** - Unfollow a user
+
+### User Feed
+- **GET /api/posts/feed/** - Returns posts from users you follow, newest first
+
+**Note:** All endpoints require authentication via JWT or token.
+
