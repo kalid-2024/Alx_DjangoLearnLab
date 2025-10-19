@@ -38,7 +38,7 @@ class FeedView(APIView):
     def get(self, request):
         user = request.user
         following_users = users.following.all()
-        posts = Post.objects.filter(user__in=following_users).order_by('-created_at')
+         posts = Post.objects.filter(user__in=following_users).order_by('-created_at')
         serialized_posts = [
              {"id": post.id, "user":post.user.username, "content":post.content, "created_at":post.created_at}
               for post in posts
