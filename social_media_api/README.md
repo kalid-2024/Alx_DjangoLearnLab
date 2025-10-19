@@ -351,3 +351,13 @@ Comment Model Overview
 
 **Note:** All endpoints require authentication via JWT or token.
 
+
+
+### Likes
+- **POST /posts/<id>/like/** - Like a post (creates a notification)
+- **POST /posts/<id>/unlike/** - Unlike a post
+
+### Notifications
+- **GET /notifications/** - Fetch all notifications for the authenticated user
+- Notifications include actor, verb, target (if any), timestamp, and read status
+
