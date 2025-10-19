@@ -44,13 +44,13 @@ class LoginView(generics.GenericAPIView):
 class ProfileView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissionsIsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
 
 class FollowUserView(APIView):
-    permission_classes = [permissionsIsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         user_to_follow = get_object_404(CustomUser, id=user_id)
@@ -62,7 +62,7 @@ class FollowUserView(APIView):
         status=status.HTTP_200_OK)
 
 class UnfollowUserView(APIView):
-    permission_classes = [permissionsIsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
